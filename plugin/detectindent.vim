@@ -99,7 +99,7 @@ fun! <SID>DetectIndent()
         elseif l:leading_char == " "
             " only interested if we don't have a run of spaces followed by a
             " tab.
-            if -1 == match(l:line, '^ \+\t')
+            if -1 == match(l:line, '^ \+\t') && -1 == match(l:line, '^ \+\*')
                 let l:has_leading_spaces = 1
                 let l:spaces = strlen(matchstr(l:line, '^ \+'))
                 if l:shortest_leading_spaces_run == 0 ||
@@ -129,22 +129,23 @@ fun! <SID>DetectIndent()
         let l:verbose_msg = "Detected tabs only and no spaces"
         setl noexpandtab
         if exists("g:detectindent_preferred_indent")
-            let &l:shiftwidth  = g:detectindent_preferred_indent
-            let &l:tabstop     = g:detectindent_preferred_indent
+            "let &l:shiftwidth  = g:detectindent_preferred_indent
         endif
 
     elseif l:has_leading_spaces && ! l:has_leading_tabs
         " spaces only, no tabs
         let l:verbose_msg = "Detected spaces only and no tabs"
         setl expandtab
-        let &l:shiftwidth  = l:shortest_leading_spaces_run
-        let &l:softtabstop = l:shortest_leading_spaces_run
+        let &l:tabstop     = l:shortest_leading_spaces_run
+        "let &l:shiftwidth  = l:shortest_leading_spaces_run
+        "let &l:softtabstop = l:shortest_leading_spaces_run
 
     elseif l:has_leading_spaces && l:has_leading_tabs
         " spaces and tabs
         let l:verbose_msg = "Detected spaces and tabs"
         setl noexpandtab
-        let &l:shiftwidth = l:shortest_leading_spaces_run
+        "let &l:shiftwidth = l:shortest_leading_spaces_run
+        let &l:tabstop = l:shortest_leading_spaces_run
 
         " mmmm, time to guess how big tabs are
         if l:longest_leading_spaces_run <= 2
