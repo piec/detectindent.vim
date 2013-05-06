@@ -99,7 +99,8 @@ fun! <SID>DetectIndent()
         elseif l:leading_char == " "
             " only interested if we don't have a run of spaces followed by a
             " tab.
-            if -1 == match(l:line, '^ \+\t') && -1 == match(l:line, '^ \+\*')
+            if -1 == match(l:line, '^ \+\t') && -1 == match(l:line, '^ \+\*') && -1 == match(l:line, ':$')
+
                 let l:has_leading_spaces = 1
                 let l:spaces = strlen(matchstr(l:line, '^ \+'))
                 if l:shortest_leading_spaces_run == 0 ||
